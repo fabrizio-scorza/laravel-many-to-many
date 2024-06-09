@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -30,8 +31,9 @@ class ProjectController extends Controller
     {
         //
         $types = Type::all();
+        $technologies = Technology::all();
 
-        return view('admin.projects.create', compact('types'));
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -59,6 +61,10 @@ class ProjectController extends Controller
         $form_data['slug'] = $slug;
 
         $project = Project::create($form_data);
+
+        if ($request->has('technologies')) {
+            $project->technologies()->attach($form_data['technologies']);
+        };
 
         return to_route('admin.projects.show', $project);
     }
@@ -101,6 +107,7 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         //
+        $project->technologies()->detach();
         $project->delete();
 
         return to_route('admin.projects.index');
