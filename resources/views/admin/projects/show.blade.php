@@ -22,7 +22,13 @@
         {{$project->description}}
     </p>
     <a href="{$project->link}}" class="link-secondary">{{$project->link}}</a>
-    <p class="pt-3">Type: {{$project->type ? $project->type->name : 'No Type'}}</p>
+    <p class="pt-3">Type: {{$project->type ? $project->type->name : 'No Type'}}</p>    
+    <ul class="d-flex gap-2 list-unstyled">
+        <li>Technologies: </li>
+        @foreach($project->technologies as $tecnology)            
+            <li>{{$tecnology->name}}</li>
+        @endforeach
+    </ul>
 </div>   
 
 <div class="modal" tabindex="-1" id="modal" aria-labelledby="modal-label" aria-hidden="true">
