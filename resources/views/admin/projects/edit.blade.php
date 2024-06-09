@@ -32,6 +32,18 @@
         </select>
       </div>
 
+      <div class="form-group mb-3" id="checklist">
+        <label for="checklist">Technologies</label>
+        <div class="d-flex gap-3 py-2">
+          @foreach ($technologies as $technology)
+              <div class="form-check">
+                <input @checked(in_array($technology->id, old('technologies',$project->technologies->pluck('id')->all()))) name="technologies[]" class="form-check-input" type="checkbox" value="{{$technology->id}}" id="technology-{{$technology->id}}">
+                <label class="form-check-label" for="technology-{{$technology->id}}"> {{$technology->name}}</label>
+              </div>
+          @endforeach
+        </div>
+      </div>
+
       <div class="mb-3">
         <label for="description" class="form-label">Project Desctiption</label>
         <textarea class="form-control" name="description" id="description" rows="5" >{{ old('description', $project->description) }}</textarea>

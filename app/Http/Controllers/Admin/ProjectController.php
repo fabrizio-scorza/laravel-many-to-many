@@ -64,7 +64,7 @@ class ProjectController extends Controller
 
         if ($request->has('technologies')) {
             $project->technologies()->attach($form_data['technologies']);
-        };
+        }
 
         return to_route('admin.projects.show', $project);
     }
@@ -86,7 +86,9 @@ class ProjectController extends Controller
     {
         //
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -97,6 +99,12 @@ class ProjectController extends Controller
         //
         $form_data = $request->validated();
         $project->update($form_data);
+
+        if ($request->has('technologies')) {
+            $project->technologies()->sync($form_data['technologies']);
+        } else {
+            $project->technologies()->detach();
+        }
 
         return to_route('admin.projects.show', $project);
     }
