@@ -6,7 +6,10 @@
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center">
         <h2>My Projects</h2>
-        <a class="btn btn-success" href="{{route('admin.projects.create')}}"> Create new project</a>
+        <div>
+            <a href="{{route('admin.dashboard')}}" class=" btn btn-secondary mx-3">Go Back</a>
+            <a class="btn btn-success" href="{{route('admin.projects.create')}}"> ADD New Project</a>            
+        </div>
     </div>
 </div>
 <div class="container">
