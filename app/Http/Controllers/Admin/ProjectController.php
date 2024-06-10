@@ -44,21 +44,9 @@ class ProjectController extends Controller
         //
         $form_data = $request->validated();
 
-        $base_slug = Str::slug($form_data['name']);
-        $slug = $base_slug;
 
-        $n = 1;
 
-        do {
-            $find = Project::where('slug', $slug)->first();
-
-            if ($find !== null) {
-                $slug = $base_slug . '-' . $n;
-                $n++;
-            }
-        } while ($find !== null);
-
-        $form_data['slug'] = $slug;
+        $form_data['slug'] = Project::getSlug($form_data['name']);
 
         $project = Project::create($form_data);
 

@@ -38,21 +38,7 @@ class TypeController extends Controller
         //
         $form_data = $request->validated();
 
-        $base_slug = Str::slug($form_data['name']);
-        $slug = $base_slug;
-
-        $n = 1;
-
-        do {
-            $find = Type::where('slug', $slug)->first();
-
-            if ($find !== null) {
-                $slug = $base_slug . '-' . $n;
-                $n++;
-            }
-        } while ($find !== null);
-
-        $form_data['slug'] = $slug;
+        $form_data['slug'] = Type::getSlug($form_data['name']);
 
         Type::create($form_data);
 

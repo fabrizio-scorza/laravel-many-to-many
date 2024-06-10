@@ -39,21 +39,7 @@ class TechnologyController extends Controller
         //
         $form_data = $request->validated();
 
-        $base_slug = Str::slug($form_data['name']);
-        $slug = $base_slug;
-
-        $n = 1;
-
-        do {
-            $find = Technology::where('slug', $slug)->first();
-
-            if ($find !== null) {
-                $slug = $base_slug . '-' . $n;
-                $n++;
-            }
-        } while ($find !== null);
-
-        $form_data['slug'] = $slug;
+        $form_data['slug'] = Technology::getSlug($form_data['name']);
 
         Technology::create($form_data);
 
