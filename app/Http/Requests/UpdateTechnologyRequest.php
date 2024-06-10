@@ -11,7 +11,7 @@ class UpdateTechnologyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,7 @@ class UpdateTechnologyRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|max:50|string'
         ];
     }
 }

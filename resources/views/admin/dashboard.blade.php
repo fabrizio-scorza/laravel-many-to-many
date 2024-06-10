@@ -25,7 +25,10 @@
                         </li>
                         <li>
                             <a href="{{route('admin.types.index')}}">Types</a>
-                        </li>                        
+                        </li>
+                        <li>
+                            <a href="{{route('admin.technologies.index')}}">Technologies</a>
+                        </li>                          
                     </ul>
                     
                 </div>

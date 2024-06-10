@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTechnologyRequest;
+use App\Http\Requests\UpdateTechnologyRequest;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TechnologyController extends Controller
 {
@@ -14,6 +18,8 @@ class TechnologyController extends Controller
     public function index()
     {
         //
+        $technologies = Technology::all();
+        return view('admin.technologies.index', compact('technologies'));
     }
 
     /**
@@ -22,45 +28,76 @@ class TechnologyController extends Controller
     public function create()
     {
         //
+        return view('admin.technologies.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTechnologyRequest $request)
     {
         //
+        $form_data = $request->validated();
+
+        $base_slug = Str::slug($form_data['name']);
+        $slug = $base_slug;
+
+        $n = 1;
+
+        do {
+            $find = Technology::where('slug', $slug)->first();
+
+            if ($find !== null) {
+                $slug = $base_slug . '-' . $n;
+                $n++;
+            }
+        } while ($find !== null);
+
+        $form_data['slug'] = $slug;
+
+        Technology::create($form_data);
+
+        return to_route('admin.technologies.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Type $type)
+    public function show(Technology $technology)
     {
         //
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Type $type)
+    public function edit(Technology $technology)
     {
         //
+        return view('admin.technologies.edit', compact('technology'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Type $type)
+    public function update(UpdateTechnologyRequest $request, Technology $technology)
     {
         //
+        $form_data = $request->validated();
+        $technology->update($form_data);
+
+        return to_route('admin.technologies.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Type $type)
+    public function destroy(Technology $technology)
     {
         //
+        $technology->delete();
+
+        return to_route('admin.technologies.index');
     }
 }
